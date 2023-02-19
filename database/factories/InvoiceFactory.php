@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -15,9 +16,14 @@ class InvoiceFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition()
-    {
+    {   
+        $status = fake()->randomElement(['B', 'P', 'V']);
         return [
-            //
+            'customer_id' => Customer::factory(),
+            'amount' => fake()->numberBetween(100, 20000),
+            'status' => $status,
+            'billed_date' => fake()->dateTimeThisDecade(),
+            'paid_date' => $status == 'P' ? fake()->dateTimeThisDecade() : NULL,
         ];
     }
 }
